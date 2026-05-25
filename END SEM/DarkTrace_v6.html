@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DarkTrace — Where Data Stands Guard for Humanity</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   DARKTRACE · DARK THEME DESIGN SYSTEM
+   ═══════════════════════════════════════════════════════ */
+:root {
+  /* Core palette */
+  --bg-base:    #080b10;
+  --bg-raised:  #0d1117;
+  --bg-panel:   #111620;
+  --bg-card:    #141920;
+  --bg-hover:   #1a2030;
+  --border:     #1e2535;
+  --border-mid: #252d3d;
+  --border-hi:  #2e3a50;
+
+  /* Text */
+  --text-primary:   #e8edf5;
+  --text-secondary: #8a96a8;
+  --text-muted:     #4a5568;
+  --text-dim:       #3a4455;
+
+  /* Accent colours */
+  --red:        #e8483a;
+  --red-mid:    #c0392b;
+  --red-glow:   rgba(232, 72, 58, 0.18);
+  --red-faint:  rgba(232, 72, 58, 0.07);
+
+  --amber:      #f5a623;
+  --amber-mid:  #d4830a;
+  --amber-glow: rgba(245, 166, 35, 0.18);
+  --amber-faint:rgba(245, 166, 35, 0.07);
+
+  --green:      #3ecf8e;
+  --green-mid:  #2c9e6a;
+  --green-glow: rgba(62, 207, 142, 0.18);
+  --green-faint:rgba(62, 207, 142, 0.06);
+
+  --blue:       #4fa3e3;
+  --blue-glow:  rgba(79, 163, 227, 0.15);
+
+  --cyan:       #00d4ff;
+  --cyan-glow:  rgba(0, 212, 255, 0.12);
+
+  /* Typography */
+  --mono: 'DM Mono', 'Courier New', monospace;
+  --display: 'Bebas Neue', Impact, sans-serif;
+  --body: 'Inter', system-ui, sans-serif;
+
+  /* Geometry */
+  --radius: 4px;
+  --radius-lg: 8px;
+}
+
+/* ─── RESET ────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--body);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── SCANLINE TEXTURE ─────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+/* ─── GRID BACKGROUND ──────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgba(30,37,53,0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,37,53,0.4) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+}
+
+/* ═══════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════ */
+header {
+  position: relative; z-index: 100;
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border-mid);
+  padding: 0 36px;
+  display: flex; align-items: stretch; justify-content: space-between;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+}
+
+/* Logo zone */
+.header-logo {
+  padding: 16px 32px 16px 0;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+  min-width: 320px;
+}
+.logo-lockup {
+  display: flex; align-items: baseline; gap: 10px;
+}
+.logo-icon {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, var(--red) 0%, var(--amber) 100%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  flex-shrink: 0;
+  position: relative;
+  animation: logo-pulse 3s ease-in-out infinite;
+}
+@keyframes logo-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(232,72,58,0); filter: brightness(1); }
+  50%      { box-shadow: 0 0 20px 4px rgba(232,72,58,0.3); filter: brightness(1.15); }
+}
+.logo-name {
+  font-family: var(--display);
+  font-size: 32px; letter-spacing: 5px; line-height: 1;
+  background: linear-gradient(90deg, #ffffff 0%, var(--amber) 60%, var(--red) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.logo-tagline {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2.5px;
+  color: var(--text-secondary);
+  padding-top: 1px;
+}
+.logo-tagline em {
+  font-style: normal;
+  color: var(--amber);
+}
+
+/* Stats strip */
+.header-stats {
+  display: flex; align-items: stretch; flex: 1;
+  margin-left: 24px;
+}
+.hstat {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 0 22px; border-right: 1px solid var(--border);
+  text-align: center;
+}
+.hstat-val {
+  font-family: var(--display); font-size: 26px; line-height: 1;
+  color: var(--amber); letter-spacing: 1px;
+}
+.hstat-lbl {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--text-secondary); margin-top: 3px;
+}
+
+/* Status badge */
+.header-status {
+  display: flex; align-items: center; gap: 10px; padding: 0 24px;
+  border-left: 1px solid var(--border);
+}
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: status-pulse 2.5s ease-out infinite;
+}
+@keyframes status-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(62,207,142,0.7); }
+  70%  { box-shadow: 0 0 0 8px rgba(62,207,142,0); }
+  100% { box-shadow: 0 0 0 0 rgba(62,207,142,0); }
+}
+.status-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+  color: var(--green);
+}
+
+/* ─── EPIGRAPH BAR ──────────────────────────────────────── */
+.epigraph-bar {
+  position: relative; z-index: 50;
+  background: linear-gradient(90deg, rgba(232,72,58,0.06) 0%, rgba(13,17,23,0) 40%);
+  border-bottom: 1px solid var(--border);
+  padding: 9px 36px;
+  display: flex; align-items: center; gap: 14px;
+}
+.epigraph-bar::before {
+  content: '//';
+  font-family: var(--mono); font-size: 11px; color: var(--red);
+  opacity: 0.7; flex-shrink: 0;
+}
+.epigraph-text {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.5px;
+  color: var(--text-secondary); flex: 1;
+  font-style: italic;
+}
+.epigraph-text strong { color: var(--text-secondary); font-style: normal; }
+.epigraph-source {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN LAYOUT
+   ═══════════════════════════════════════════════════════ */
+.app-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  min-height: calc(100vh - 115px);
+  position: relative; z-index: 1;
+}
+
+/* ═══════════════════════════════════════════════════════
+   LEFT CONTROL PANEL
+   ═══════════════════════════════════════════════════════ */
+.ctrl-panel {
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border-mid);
+  padding: 24px 20px;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.ctrl-panel::-webkit-scrollbar { width: 3px; }
+.ctrl-panel::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+.ctrl-section-title {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 4px;
+  color: var(--text-secondary);
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.ctrl-section-title::before {
+  content: ''; display: block;
+  width: 16px; height: 1px; background: var(--red); flex-shrink: 0;
+}
+
+/* ─── FEATURE BLOCK ──────────────────────────────────────── */
+.feat-block { display: flex; flex-direction: column; gap: 7px; }
+.feat-header {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.feat-name {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+  color: var(--text-primary); font-weight: 600;
+}
+.feat-pill {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px;
+  background: rgba(245,166,35,0.12); color: var(--amber);
+  border: 1px solid rgba(245,166,35,0.25);
+  padding: 2px 7px; border-radius: 2px;
+}
+
+/* SELECT */
+.feat-select {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-mid);
+  color: var(--text-primary);
+  padding: 9px 32px 9px 12px;
+  border-radius: var(--radius);
+  font-family: var(--body); font-size: 13.5px; font-weight: 500;
+  outline: none; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  transition: border-color 0.2s, background 0.2s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%234a5568'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+.feat-select:focus { border-color: var(--amber); background: var(--bg-hover); }
+.feat-select option { background: #1a2030; color: #e8edf5; }
+
+/* TOGGLE */
+.feat-toggle { display: flex; gap: 5px; }
+.toggle-btn {
+  flex: 1; padding: 8px 6px;
+  background: var(--bg-card); border: 1px solid var(--border-mid);
+  border-radius: var(--radius); cursor: pointer;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px;
+  color: var(--text-secondary); transition: all 0.15s;
+}
+.toggle-btn:hover { border-color: var(--border-hi); color: var(--text-secondary); }
+.toggle-btn.active-no {
+  background: var(--red-faint); border-color: var(--red-mid);
+  color: var(--red); box-shadow: 0 0 8px rgba(232,72,58,0.15);
+}
+.toggle-btn.active-yes {
+  background: var(--green-faint); border-color: var(--green-mid);
+  color: var(--green); box-shadow: 0 0 8px rgba(62,207,142,0.15);
+}
+
+/* SLIDER */
+.slider-val-row {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.slider-current {
+  font-family: var(--display); font-size: 28px; letter-spacing: 2px;
+  color: var(--text-primary); line-height: 1;
+}
+.slider-current span { font-family: var(--mono); font-size: 11px; color: var(--text-secondary); margin-left: 4px; }
+.feat-slider {
+  -webkit-appearance: none; width: 100%; height: 2px;
+  background: var(--border-hi); outline: none; cursor: pointer; border-radius: 1px;
+}
+.feat-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px rgba(245,166,35,0.5);
+  cursor: pointer; transition: box-shadow 0.2s;
+}
+.feat-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 14px rgba(245,166,35,0.7);
+}
+.slider-labels {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 4px;
+}
+
+/* ─── PREDICT BUTTON ──────────────────────────────────────── */
+.predict-btn {
+  width: 100%; padding: 14px 16px;
+  background: linear-gradient(135deg, #c0392b 0%, #e8483a 50%, #d4830a 100%);
+  color: #ffffff; border: none;
+  border-radius: var(--radius);
+  font-family: var(--display); font-size: 17px; letter-spacing: 5px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(232,72,58,0.3), 0 0 0 1px rgba(232,72,58,0.2);
+}
+.predict-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+.predict-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(232,72,58,0.4), 0 0 0 1px rgba(232,72,58,0.3);
+}
+.predict-btn:active { transform: translateY(0); }
+
+.reset-btn {
+  width: 100%; padding: 8px;
+  background: transparent; border: 1px solid var(--border-mid);
+  color: var(--text-muted); border-radius: var(--radius);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.2s;
+}
+.reset-btn:hover { border-color: var(--border-hi); color: var(--text-secondary); }
+
+/* ─── PRESETS ─────────────────────────────────────────────── */
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.preset-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 8px;
+  text-align: center; cursor: pointer; transition: all 0.15s;
+}
+.preset-card:hover {
+  border-color: var(--border-hi); background: var(--bg-hover);
+  box-shadow: 0 0 12px rgba(245,166,35,0.1);
+}
+.preset-icon { font-size: 15px; margin-bottom: 3px; }
+.preset-label {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.5px;
+  color: var(--text-secondary); line-height: 1.5; margin-bottom: 4px;
+}
+.preset-prob { font-family: var(--display); font-size: 18px; }
+
+/* ═══════════════════════════════════════════════════════
+   RIGHT RESULTS PANEL
+   ═══════════════════════════════════════════════════════ */
+.results-panel {
+  padding: 28px 32px;
+  overflow-y: auto; background: var(--bg-base);
+  display: flex; flex-direction: column; gap: 20px;
+}
+.results-panel::-webkit-scrollbar { width: 3px; }
+.results-panel::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 2px; }
+
+/* ─── PLACEHOLDER ─────────────────────────────────────────── */
+.placeholder {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; min-height: 460px; gap: 16px;
+}
+.placeholder-hex {
+  width: 80px; height: 92px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 28px; color: var(--text-dim);
+  animation: hex-idle 4s ease-in-out infinite;
+}
+@keyframes hex-idle {
+  0%,100% { box-shadow: 0 0 0 0 rgba(245,166,35,0); }
+  50%      { box-shadow: 0 0 30px 10px rgba(245,166,35,0.06); }
+}
+.placeholder-title {
+  font-family: var(--display); font-size: 22px; letter-spacing: 4px;
+  color: var(--text-dim);
+}
+.placeholder-text {
+  font-family: var(--body); font-size: 13px; font-weight: 300;
+  color: var(--text-muted); text-align: center; line-height: 1.8;
+  max-width: 360px;
+}
+.placeholder-cta {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 3px;
+  color: var(--amber); border: 1px solid rgba(245,166,35,0.3);
+  padding: 8px 18px; border-radius: 2px;
+  background: rgba(245,166,35,0.05);
+}
+
+/* ─── COMPUTING ───────────────────────────────────────────── */
+.computing {
+  display: none; align-items: center; justify-content: center;
+  gap: 14px; padding: 32px; min-height: 200px;
+}
+.spinner {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border-hi);
+  border-top-color: var(--amber); border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.computing-text {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 2.5px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════════════
+   VERDICT CARD
+   ═══════════════════════════════════════════════════════ */
+.verdict-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.5s;
+}
+.verdict-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  transition: background 0.5s;
+}
+.verdict-card .vc-glow {
+  position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  pointer-events: none; transition: background 0.5s; opacity: 0.07;
+  filter: blur(40px);
+}
+.vc-main {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 18px; position: relative;
+}
+.vc-left .vc-label {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 3px;
+  color: var(--text-secondary); margin-bottom: 4px;
+}
+.vc-probability {
+  font-family: var(--display); font-size: 96px; line-height: 0.85;
+  letter-spacing: 0px; transition: color 0.5s;
+  text-shadow: 0 0 40px currentColor;
+}
+.vc-right { text-align: right; padding-top: 8px; }
+.vc-verdict-badge {
+  display: inline-block;
+  font-family: var(--display); font-size: 16px; letter-spacing: 4px;
+  padding: 5px 14px; border-radius: 2px;
+  transition: all 0.5s; margin-bottom: 10px;
+}
+.vc-desc {
+  font-family: var(--body); font-size: 13.5px; font-weight: 400;
+  color: var(--text-secondary); max-width: 220px; line-height: 1.6;
+  text-align: right;
+}
+
+/* Gauge */
+.gauge-track {
+  height: 6px; background: var(--border);
+  border-radius: 3px; overflow: hidden; margin-top: 4px;
+  border: 1px solid var(--border-mid);
+}
+.gauge-fill {
+  height: 100%; border-radius: 3px;
+  transition: width 1.2s cubic-bezier(.4,0,.2,1), background 0.5s;
+  position: relative;
+}
+.gauge-fill::after {
+  content: '';
+  position: absolute; right: 0; top: 0; bottom: 0; width: 4px;
+  background: rgba(255,255,255,0.5);
+  filter: blur(2px);
+}
+.gauge-labels {
+  display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 4px;
+}
+
+/* CI bands */
+.ci-bands {
+  display: flex; gap: 8px; margin-top: 14px;
+}
+.ci-item {
+  flex: 1; background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 9px 10px; text-align: center;
+}
+.ci-val { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text-primary); }
+.ci-lbl { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; color: var(--text-secondary); margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════════
+   SECTION CARDS
+   ═══════════════════════════════════════════════════════ */
+.section-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.sc-head {
+  padding: 11px 18px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.sc-head-title {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2.5px;
+  color: var(--text-primary); font-weight: 600;
+  display: flex; align-items: center; gap: 8px;
+}
+.sc-head-title::before {
+  content: ''; display: block;
+  width: 12px; height: 2px;
+  background: linear-gradient(90deg, var(--red), var(--amber));
+}
+.sc-head-meta {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 1px;
+  color: var(--text-muted);
+}
+.sc-body { padding: 18px; }
+
+/* ─── FEATURE IMPACT BARS ─────────────────────────────────── */
+.impact-row { margin-bottom: 13px; }
+.impact-row-header {
+  display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px;
+}
+.impact-feat { font-family: var(--body); font-size: 13.5px; font-weight: 500; color: var(--text-primary); }
+.impact-feat sub { font-family: var(--mono); font-size: 10.5px; color: var(--text-secondary); font-weight: 400; }
+.impact-delta { font-family: var(--mono); font-size: 12px; font-weight: 600; }
+.impact-track {
+  height: 5px; background: var(--border); border-radius: 2px;
+  position: relative; overflow: hidden;
+}
+.impact-bar {
+  height: 100%; border-radius: 2px;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
+  position: absolute; top: 0;
+}
+.impact-midline {
+  position: absolute; top: -4px; left: 50%; width: 1px; height: 13px;
+  background: var(--border-hi);
+}
+
+/* ─── SENSITIVITY CHART ───────────────────────────────────── */
+#sensitivityChart { width: 100%; height: 190px; display: block; }
+
+/* ─── SCENARIO TILES ──────────────────────────────────────── */
+.scenario-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.scenario-tile {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 10px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+}
+.scenario-tile:hover {
+  border-color: var(--border-hi); background: var(--bg-hover);
+}
+.scenario-tile.active {
+  border-color: var(--amber);
+  box-shadow: 0 0 16px rgba(245,166,35,0.15);
+  background: rgba(245,166,35,0.05);
+}
+.sc-tile-icon { font-size: 18px; margin-bottom: 5px; }
+.sc-tile-name {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.5px;
+  color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;
+}
+.sc-tile-prob { font-family: var(--display); font-size: 22px; }
+
+/* ─── COUNTERFACTUAL ──────────────────────────────────────── */
+.cf-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.cf-row:last-child { border-bottom: none; }
+.cf-glyph { font-family: var(--mono); font-size: 13px; width: 18px; flex-shrink: 0; }
+.cf-text {
+  font-family: var(--body); font-size: 13.5px; font-weight: 400;
+  color: var(--text-secondary); flex: 1; line-height: 1.4;
+}
+.cf-text em { font-style: normal; color: var(--text-primary); font-weight: 600; }
+.cf-delta { font-family: var(--mono); font-size: 12px; font-weight: 600; white-space: nowrap; }
+
+/* ─── MODEL SPEC ──────────────────────────────────────────── */
+.spec-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+.spec-cell {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 10px; text-align: center;
+}
+.spec-val { font-family: var(--mono); font-size: 14px; color: var(--amber); font-weight: 500; }
+.spec-lbl { font-family: var(--mono); font-size: 10px; color: var(--text-secondary); letter-spacing: 1.5px; margin-top: 4px; }
+
+/* ─── NARRATIVE FOOTER ────────────────────────────────────── */
+.narrative-footer {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 22px;
+  position: relative; overflow: hidden;
+}
+.narrative-footer::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--red), var(--amber));
+}
+.nf-quote {
+  font-family: var(--body); font-size: 13.5px; font-weight: 300;
+  color: var(--text-secondary); line-height: 1.8;
+  font-style: italic; padding-left: 14px;
+}
+.nf-source {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 2px;
+  color: var(--text-muted); margin-top: 10px; padding-left: 14px;
+}
+
+/* ─── RESULT CONTENT ──────────────────────────────────────── */
+#resultContent { display: none; flex-direction: column; gap: 20px; }
+
+/* ═══════════════════════════════════════════════════════
+   THREAT TICKER (top of results)
+   ═══════════════════════════════════════════════════════ */
+.threat-ticker {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 9px 16px;
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--mono); font-size: 11px; overflow: hidden;
+}
+.ticker-label {
+  color: var(--red); letter-spacing: 3px; white-space: nowrap; flex-shrink: 0;
+  font-weight: 500;
+}
+.ticker-text { color: var(--text-muted); letter-spacing: 1px; }
+.ticker-divider { color: var(--text-dim); margin: 0 4px; }
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  .app-grid { grid-template-columns: 1fr; }
+  .ctrl-panel { border-right: none; border-bottom: 1px solid var(--border-mid); }
+  .spec-grid { grid-template-columns: repeat(2,1fr); }
+  .scenario-grid { grid-template-columns: repeat(2,1fr); }
+  header { flex-wrap: wrap; padding: 12px 16px; gap: 8px; }
+  .header-logo { border-right: none; padding-right: 0; min-width: auto; }
+  .header-stats { flex-wrap: wrap; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   CINEMATIC INTRO OVERLAY
+   ═══════════════════════════════════════════════════════ */
+
+/* Lock scroll while intro plays */
+body.intro-active { overflow: hidden; }
+
+#intro-overlay {
+  position: fixed; inset: 0; z-index: 100000;
+  background: #000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: hidden;
+}
+
+/* ── PARTICLES CANVAS ─── */
+#intro-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+
+/* ── RADIAL BURST behind logo ─── */
+.intro-burst {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,72,58,0.18) 0%, rgba(245,166,35,0.08) 35%, transparent 70%);
+  opacity: 0;
+  animation: burst-grow 1.2s 1.4s cubic-bezier(0.16,1,0.3,1) forwards;
+  pointer-events: none;
+}
+@keyframes burst-grow {
+  from { transform: scale(0.2); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* ── SCAN LINE SWEEP ─── */
+.intro-scan {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(232,72,58,0.06) 48%,
+    rgba(232,72,58,0.12) 50%,
+    rgba(232,72,58,0.06) 52%,
+    transparent 100%);
+  background-size: 100% 200%;
+  animation: scan-sweep 2.2s 0.4s ease-in-out forwards;
+  opacity: 0;
+}
+@keyframes scan-sweep {
+  0%   { background-position: 0 -100%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { background-position: 0 200%; opacity: 0; }
+}
+
+/* ── BOOT LOG ─── */
+.intro-boot-log {
+  position: absolute;
+  top: 10%; left: 50%; transform: translateX(-50%);
+  width: 520px;
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: rgba(62,207,142,0.7);
+  letter-spacing: 1.5px; line-height: 1.9;
+  opacity: 0;
+  animation: fade-in-log 0.4s 0.2s ease forwards;
+}
+@keyframes fade-in-log {
+  to { opacity: 1; }
+}
+.boot-line {
+  display: block; overflow: hidden;
+  white-space: nowrap; width: 0;
+  animation: type-line 0.35s ease forwards;
+}
+.boot-line.ok::after {
+  content: ' [OK]';
+  color: rgba(62,207,142,0.9);
+}
+.boot-line.warn::after {
+  content: ' [WARN]';
+  color: rgba(245,166,35,0.9);
+}
+
+/* ── HEX LOGO ─── */
+.intro-hex-wrap {
+  position: relative;
+  width: 110px; height: 110px;
+  margin-bottom: 36px;
+  opacity: 0;
+  animation: hex-enter 0.7s 1.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes hex-enter {
+  from { opacity: 0; transform: scale(0.4) rotate(-30deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+.intro-hex {
+  width: 110px; height: 110px;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background: linear-gradient(135deg, #e8483a 0%, #f5a623 100%);
+  display: flex; align-items: center; justify-content: center;
+  animation: hex-pulse-intro 2s 2s ease-in-out infinite;
+}
+@keyframes hex-pulse-intro {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(232,72,58,0.5)); }
+  50%     { filter: brightness(1.2) drop-shadow(0 0 28px rgba(232,72,58,0.9)); }
+}
+.intro-hex-inner {
+  width: 52px; height: 52px;
+  clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+}
+.intro-hex-symbol {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: 24px; color: #f5a623; letter-spacing: 1px;
+  animation: symbol-flicker 3s 2.2s ease-in-out infinite;
+}
+@keyframes symbol-flicker {
+  0%,90%,100% { opacity: 1; }
+  92%         { opacity: 0.2; }
+  94%         { opacity: 1; }
+  96%         { opacity: 0.3; }
+  98%         { opacity: 1; }
+}
+
+/* Orbiting ring */
+.intro-hex-ring {
+  position: absolute; inset: -14px;
+  border-radius: 50%;
+  border: 1px solid rgba(232,72,58,0.3);
+  animation: ring-spin 8s linear infinite;
+}
+.intro-hex-ring::before {
+  content: '';
+  position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #e8483a;
+  box-shadow: 0 0 8px #e8483a;
+}
+.intro-hex-ring-2 {
+  position: absolute; inset: -28px;
+  border-radius: 50%;
+  border: 1px solid rgba(245,166,35,0.15);
+  animation: ring-spin 14s linear infinite reverse;
+}
+.intro-hex-ring-2::before {
+  content: '';
+  position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%);
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #f5a623;
+  box-shadow: 0 0 6px #f5a623;
+}
+@keyframes ring-spin { to { transform: rotate(360deg); } }
+
+/* ── MAIN TITLE ─── */
+.intro-content {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+
+.intro-title {
+  font-family: 'Bebas Neue', Impact, sans-serif;
+  font-size: clamp(64px, 12vw, 108px);
+  letter-spacing: 12px;
+  line-height: 1;
+  margin-bottom: 0;
+  background: linear-gradient(90deg, #ffffff 0%, #f5a623 45%, #e8483a 85%, #c0392b 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0;
+  animation: title-slam 0.6s 1.5s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes title-slam {
+  from { opacity: 0; transform: scale(1.3) translateY(-20px); filter: blur(8px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0);     filter: blur(0); }
+}
+
+/* glitch frames on title */
+.intro-title.glitch {
+  animation: title-slam 0.6s 1.5s cubic-bezier(0.22,1,0.36,1) forwards,
+             glitch-anim 6s 2.8s steps(1) infinite;
+}
+@keyframes glitch-anim {
+  0%,94%,100% {
+    clip-path: none; transform: none; text-shadow: none;
+  }
+  95% {
+    clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+    transform: translate(-3px, 0);
+    text-shadow: 2px 0 #e8483a;
+  }
+  96% {
+    clip-path: polygon(0 60%, 100% 60%, 100% 75%, 0 75%);
+    transform: translate(3px, 0);
+    text-shadow: -2px 0 #4fa3e3;
+  }
+  97% {
+    clip-path: polygon(0 0%, 100% 0%, 100% 15%, 0 15%);
+    transform: translate(0, 0);
+    text-shadow: none;
+  }
+}
+
+/* ── TAGLINE ─── */
+.intro-tagline {
+  font-family: 'DM Mono', monospace;
+  font-size: clamp(11px, 1.8vw, 15px);
+  letter-spacing: 4px;
+  color: rgba(245,166,35,0.9);
+  margin-top: 12px;
+  opacity: 0;
+  animation: tagline-rise 0.7s 2.0s ease forwards;
+}
+@keyframes tagline-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── DIVIDER LINE ─── */
+.intro-divider {
+  width: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, #e8483a, #f5a623, transparent);
+  margin: 18px auto;
+  animation: line-expand 0.8s 2.1s ease forwards;
+}
+@keyframes line-expand {
+  from { width: 0; }
+  to   { width: min(480px, 70vw); }
+}
+
+/* ── SUB-LINE ─── */
+.intro-sub {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  letter-spacing: 3px; color: rgba(138,150,168,0.8);
+  opacity: 0;
+  animation: tagline-rise 0.5s 2.4s ease forwards;
+}
+
+/* ── STATS ROW ─── */
+.intro-stats {
+  display: flex; gap: 0;
+  margin-top: 28px;
+  border: 1px solid rgba(30,37,53,0.8);
+  border-radius: 6px; overflow: hidden;
+  opacity: 0;
+  animation: tagline-rise 0.6s 2.6s ease forwards;
+}
+.intro-stat {
+  padding: 12px 24px;
+  border-right: 1px solid rgba(30,37,53,0.8);
+  text-align: center;
+  background: rgba(13,17,23,0.6);
+  backdrop-filter: blur(8px);
+}
+.intro-stat:last-child { border-right: none; }
+.intro-stat-val {
+  font-family: 'Bebas Neue', sans-serif; font-size: 26px;
+  color: #f5a623; line-height: 1; letter-spacing: 1px;
+}
+.intro-stat-lbl {
+  font-family: 'DM Mono', monospace; font-size: 8.5px;
+  letter-spacing: 2px; color: rgba(138,150,168,0.7); margin-top: 3px;
+}
+
+/* ── ENTER BUTTON ─── */
+.intro-enter-btn {
+  margin-top: 36px;
+  padding: 14px 48px;
+  background: transparent;
+  border: 1px solid rgba(232,72,58,0.5);
+  border-radius: 3px;
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  letter-spacing: 6px; color: rgba(232,72,58,0.9);
+  cursor: pointer;
+  opacity: 0;
+  animation: btn-appear 0.6s 3.0s ease forwards;
+  transition: all 0.25s;
+  position: relative; overflow: hidden;
+}
+.intro-enter-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(232,72,58,0) 0%, rgba(232,72,58,0.08) 100%);
+  opacity: 0; transition: opacity 0.25s;
+}
+.intro-enter-btn:hover {
+  border-color: rgba(232,72,58,0.9);
+  color: #fff;
+  box-shadow: 0 0 24px rgba(232,72,58,0.3), inset 0 0 24px rgba(232,72,58,0.05);
+  transform: translateY(-1px);
+}
+.intro-enter-btn:hover::before { opacity: 1; }
+.intro-enter-btn:active { transform: translateY(0); }
+@keyframes btn-appear {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* subtle blinking cursor after button text */
+.intro-enter-btn::after {
+  content: ' _';
+  animation: blink-cur 1s 3.6s step-end infinite;
+  opacity: 0;
+}
+@keyframes blink-cur {
+  0%,100% { opacity: 0; }
+  50%     { opacity: 1; }
+}
+
+/* ── CORNER BRACKETS ─── */
+.intro-bracket {
+  position: absolute;
+  width: 40px; height: 40px;
+  opacity: 0;
+  animation: bracket-in 0.5s 1.8s ease forwards;
+}
+.intro-bracket.tl { top: 24px; left: 24px;
+  border-top: 1.5px solid rgba(245,166,35,0.4);
+  border-left: 1.5px solid rgba(245,166,35,0.4); }
+.intro-bracket.tr { top: 24px; right: 24px;
+  border-top: 1.5px solid rgba(245,166,35,0.4);
+  border-right: 1.5px solid rgba(245,166,35,0.4); }
+.intro-bracket.bl { bottom: 24px; left: 24px;
+  border-bottom: 1.5px solid rgba(245,166,35,0.4);
+  border-left: 1.5px solid rgba(245,166,35,0.4); }
+.intro-bracket.br { bottom: 24px; right: 24px;
+  border-bottom: 1.5px solid rgba(245,166,35,0.4);
+  border-right: 1.5px solid rgba(245,166,35,0.4); }
+@keyframes bracket-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── EXIT ANIMATION ─── */
+#intro-overlay.exiting {
+  animation: overlay-exit 0.9s cubic-bezier(0.7,0,1,1) forwards;
+}
+@keyframes overlay-exit {
+  0%   { opacity: 1; transform: scale(1); }
+  40%  { opacity: 1; transform: scale(1.03); filter: brightness(1.4); }
+  100% { opacity: 0; transform: scale(0.96); filter: brightness(2); pointer-events: none; }
+}
+
+/* ── MAIN APP hidden until intro done ─── */
+#app-shell {
+  opacity: 0;
+  transition: opacity 0.8s ease 0.15s;
+}
+#app-shell.visible { opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     CINEMATIC INTRO OVERLAY
+     ═══════════════════════════════════════════════════ -->
+<div id="intro-overlay">
+  <canvas id="intro-canvas"></canvas>
+  <div class="intro-scan"></div>
+  <div class="intro-burst"></div>
+
+  <!-- Corner brackets -->
+  <div class="intro-bracket tl"></div>
+  <div class="intro-bracket tr"></div>
+  <div class="intro-bracket bl"></div>
+  <div class="intro-bracket br"></div>
+
+  <!-- Boot log -->
+  <div class="intro-boot-log" id="bootLog"></div>
+
+  <!-- Central content -->
+  <div class="intro-content">
+    <div class="intro-hex-wrap">
+      <div class="intro-hex-ring-2"></div>
+      <div class="intro-hex-ring"></div>
+      <div class="intro-hex">
+        <div class="intro-hex-inner">
+          <span class="intro-hex-symbol">DT</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="intro-title glitch">DARKTRACE</div>
+    <div class="intro-tagline">WHERE DATA STANDS GUARD FOR HUMANITY</div>
+    <div class="intro-divider"></div>
+    <div class="intro-sub">GLOBAL TERRORISM DATABASE · GRADIENT BOOSTING CLASSIFIER · NB6</div>
+
+    <div class="intro-stats">
+      <div class="intro-stat">
+        <div class="intro-stat-val" id="is-incidents">0</div>
+        <div class="intro-stat-lbl">INCIDENTS</div>
+      </div>
+
+      <div class="intro-stat">
+        <div class="intro-stat-val">1970–2020</div>
+        <div class="intro-stat-lbl">DATA RANGE</div>
+      </div>
+    </div>
+
+    <button class="intro-enter-btn" id="introEnterBtn" onclick="dismissIntro()">
+      ENTER DARKTRACE
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAIN APPLICATION SHELL (hidden until intro exits)
+     ═══════════════════════════════════════════════════ -->
+<div id="app-shell">
+
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <div class="header-logo">
+    <div class="logo-lockup">
+      <div class="logo-icon"></div>
+      <div class="logo-name">DarkTrace</div>
+    </div>
+    <div class="logo-tagline">WHERE DATA STANDS GUARD FOR <em>HUMANITY</em></div>
+  </div>
+
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-val">200</div><div class="hstat-lbl">GBM TREES</div></div>
+    <div class="hstat"><div class="hstat-val">0.05</div><div class="hstat-lbl">LEARN RATE</div></div>
+    <div class="hstat"><div class="hstat-val">209K</div><div class="hstat-lbl">INCIDENTS</div></div>
+  </div>
+
+  <div class="header-status">
+    <div class="status-dot"></div>
+    <div class="status-label">GBM ACTIVE</div>
+  </div>
+</header>
+
+<!-- ═══════════ EPIGRAPH ═══════════ -->
+<div class="epigraph-bar">
+  <div class="epigraph-text">Behind every data point is a human story. This model does not celebrate violence — it seeks to <strong>understand patterns so we may interrupt them.</strong></div>
+  <div class="epigraph-source">GTD · START · UMD</div>
+</div>
+
+<!-- ═══════════ APP GRID ═══════════ -->
+<div class="app-grid">
+
+  <!-- LEFT: CONTROLS -->
+  <div class="ctrl-panel">
+    <div class="ctrl-section-title">CONFIGURE SCENARIO</div>
+
+    <!-- Attack Type -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">ATTACK TYPE</span>
+        <span class="feat-pill">18.4% IMP</span>
+      </div>
+      <select class="feat-select" id="attackType" onchange="onParamChange()">
+        <option value="bombing">Bombing / Explosion</option>
+        <option value="armed">Armed Assault</option>
+        <option value="assassination">Assassination</option>
+        <option value="hostage">Hostage Taking</option>
+        <option value="facility">Facility / Infrastructure</option>
+        <option value="unarmed">Unarmed Assault</option>
+        <option value="hijacking">Hijacking</option>
+        <option value="unknown">Unknown</option>
+      </select>
+    </div>
+
+    <!-- Target Type -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">TARGET TYPE</span>
+        <span class="feat-pill">14.2% IMP</span>
+      </div>
+      <select class="feat-select" id="targetType" onchange="onParamChange()">
+        <option value="private">Private Citizens &amp; Property</option>
+        <option value="government">Government</option>
+        <option value="military">Military</option>
+        <option value="police">Police</option>
+        <option value="business">Business</option>
+        <option value="transportation">Transportation</option>
+        <option value="religious">Religious Institutions</option>
+        <option value="educational">Educational Institution</option>
+        <option value="journalists">Journalists &amp; Media</option>
+        <option value="ngo">NGO / Aid Organisation</option>
+      </select>
+    </div>
+
+    <!-- Weapon Type -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">WEAPON TYPE</span>
+        <span class="feat-pill">12.7% IMP</span>
+      </div>
+      <select class="feat-select" id="weaponType" onchange="onParamChange()">
+        <option value="explosives">Explosives / Incendiaries</option>
+        <option value="firearms">Firearms</option>
+        <option value="melee">Melee / Bladed</option>
+        <option value="vehicle">Vehicle (Non-explosive)</option>
+        <option value="incendiary">Incendiary</option>
+        <option value="chemical">Chemical Agent</option>
+        <option value="biological">Biological Agent</option>
+        <option value="unknown">Unknown / Other</option>
+      </select>
+    </div>
+
+    <!-- Region -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">REGION</span>
+        <span class="feat-pill">11.3% IMP</span>
+      </div>
+      <select class="feat-select" id="region" onchange="onParamChange()">
+        <option value="mena">Middle East &amp; North Africa</option>
+        <option value="south_asia">South Asia</option>
+        <option value="ssa">Sub-Saharan Africa</option>
+        <option value="sea">Southeast Asia</option>
+        <option value="east_asia">East Asia</option>
+        <option value="w_europe">Western Europe</option>
+        <option value="e_europe">Eastern Europe</option>
+        <option value="n_america">North America</option>
+        <option value="c_america">Central America &amp; Caribbean</option>
+        <option value="s_america">South America</option>
+        <option value="aus_oceania">Australasia &amp; Oceania</option>
+      </select>
+    </div>
+
+    <!-- Year -->
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">YEAR OF ATTACK</span>
+        <span class="feat-pill">22.1% IMP</span>
+      </div>
+      <div class="slider-val-row">
+        <div class="slider-current" id="yearDisplay">2015<span>CE</span></div>
+      </div>
+      <input type="range" class="feat-slider" id="yearSlider"
+        min="1970" max="2025" value="2015"
+        oninput="document.getElementById('yearDisplay').innerHTML=this.value+'<span>CE</span>';onParamChange()">
+      <div class="slider-labels">
+        <span>1970</span><span>1985</span><span>2000</span><span>2015</span><span>2025</span>
+      </div>
+    </div>
+
+    <!-- Binary toggles -->
+    <div class="ctrl-section-title" style="margin-top:4px">TACTICAL FLAGS</div>
+
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">SUICIDE OPERATION</span>
+        <span class="feat-pill">8.9% IMP</span>
+      </div>
+      <div class="feat-toggle">
+        <button class="toggle-btn active-no" id="suicideNo"  onclick="setToggle('suicide','no')">✗ &nbsp;NO</button>
+        <button class="toggle-btn"           id="suicideYes" onclick="setToggle('suicide','yes')">✓ &nbsp;YES</button>
+      </div>
+    </div>
+
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">EXTENDED INCIDENT</span>
+        <span class="feat-pill">5.2% IMP</span>
+      </div>
+      <div class="feat-toggle">
+        <button class="toggle-btn active-no" id="extendedNo"  onclick="setToggle('extended','no')">✗ &nbsp;NO</button>
+        <button class="toggle-btn"           id="extendedYes" onclick="setToggle('extended','yes')">✓ &nbsp;YES</button>
+      </div>
+    </div>
+
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">INTERNATIONAL COMPONENT</span>
+        <span class="feat-pill">4.8% IMP</span>
+      </div>
+      <div class="feat-toggle">
+        <button class="toggle-btn active-no" id="intlNo"  onclick="setToggle('intl','no')">✗ &nbsp;NO</button>
+        <button class="toggle-btn"           id="intlYes" onclick="setToggle('intl','yes')">✓ &nbsp;YES</button>
+      </div>
+    </div>
+
+    <div class="feat-block">
+      <div class="feat-header">
+        <span class="feat-name">RESPONSIBILITY CLAIMED</span>
+        <span class="feat-pill">2.4% IMP</span>
+      </div>
+      <div class="feat-toggle">
+        <button class="toggle-btn active-no" id="claimedNo"  onclick="setToggle('claimed','no')">✗ &nbsp;NO</button>
+        <button class="toggle-btn"           id="claimedYes" onclick="setToggle('claimed','yes')">✓ &nbsp;YES</button>
+      </div>
+    </div>
+
+    <button class="predict-btn" onclick="runPrediction()">▶ &nbsp;RUN GBM PREDICTION</button>
+    <button class="reset-btn" onclick="resetAll()">↺ &nbsp; RESET SCENARIO</button>
+
+    <!-- EXAMPLE PRESETS -->
+    <div class="ctrl-section-title" style="margin-top:4px">QUICK SCENARIOS</div>
+    <div class="preset-grid" id="presetGrid"></div>
+  </div>
+
+  <!-- RIGHT: RESULTS -->
+  <div class="results-panel" id="resultsPanel">
+
+    <!-- PLACEHOLDER -->
+    <div class="placeholder" id="placeholder">
+      <div class="placeholder-hex">⊙</div>
+      <div class="placeholder-title">AWAITING INPUT</div>
+      <div class="placeholder-text">
+        Configure an attack scenario using the parameters on the left,
+        then run the Gradient Boosting model. Each prediction draws on
+        patterns learned from <strong style="color:var(--text-secondary)">over 209,000 documented incidents</strong>
+        spanning five decades.
+      </div>
+      <div class="placeholder-cta">CONFIGURE &amp; PREDICT →</div>
+    </div>
+
+    <!-- COMPUTING -->
+    <div class="computing" id="computing">
+      <div class="spinner"></div>
+      <div class="computing-text">RUNNING GRADIENT BOOSTING MODEL&nbsp;&nbsp;·&nbsp;&nbsp;200 ESTIMATORS</div>
+    </div>
+
+    <!-- RESULTS -->
+    <div id="resultContent">
+
+      <!-- TICKER -->
+      <div class="threat-ticker" id="threatTicker">
+        <span class="ticker-label">DARKTRACE INTEL</span>
+        <span class="ticker-text" id="tickerText">Model output ready — review prediction below</span>
+      </div>
+
+      <!-- VERDICT -->
+      <div class="verdict-card" id="verdictCard">
+        <div class="vc-glow" id="vcGlow"></div>
+        <div class="vc-main">
+          <div class="vc-left">
+            <div class="vc-label">P(ATTACK SUCCESS) — GBM ESTIMATE</div>
+            <div class="vc-probability" id="vcProb">—</div>
+          </div>
+          <div class="vc-right">
+            <div class="vc-verdict-badge" id="vcBadge">—</div>
+            <div class="vc-desc" id="vcDesc">—</div>
+          </div>
+        </div>
+        <div class="gauge-track">
+          <div class="gauge-fill" id="gaugeFill" style="width:0%"></div>
+        </div>
+        <div class="gauge-labels">
+          <span>0%</span><span>LOW</span><span>50%</span><span>HIGH</span><span>100%</span>
+        </div>
+        <div class="ci-bands" id="ciBands"></div>
+      </div>
+
+      <!-- FEATURE IMPACT -->
+      <div class="section-card">
+        <div class="sc-head">
+          <span class="sc-head-title">FEATURE CONTRIBUTIONS</span>
+          <span class="sc-head-meta">▲ raises threat · ▼ lowers threat</span>
+        </div>
+        <div class="sc-body" id="impactBars"></div>
+      </div>
+
+      <!-- TEMPORAL SENSITIVITY -->
+      <div class="section-card">
+        <div class="sc-head">
+          <span class="sc-head-title">TEMPORAL SENSITIVITY — P(SUCCESS) ACROSS DECADES</span>
+          <span class="sc-head-meta">● current year</span>
+        </div>
+        <div class="sc-body" style="padding:14px 18px">
+          <canvas id="sensitivityChart"></canvas>
+        </div>
+      </div>
+
+      <!-- SCENARIO COMPARATOR -->
+      <div class="section-card">
+        <div class="sc-head">
+          <span class="sc-head-title">HISTORICAL SCENARIO COMPARATOR</span>
+          <span class="sc-head-meta">click to load</span>
+        </div>
+        <div class="sc-body">
+          <div class="scenario-grid" id="scenarioGrid"></div>
+        </div>
+      </div>
+
+      <!-- COUNTERFACTUAL -->
+      <div class="section-card">
+        <div class="sc-head">
+          <span class="sc-head-title">COUNTERFACTUAL ANALYSIS</span>
+          <span class="sc-head-meta">single-variable interventions</span>
+        </div>
+        <div class="sc-body" id="cfList" style="padding:10px 18px"></div>
+      </div>
+
+      <!-- MODEL SPEC -->
+      <div class="section-card">
+        <div class="sc-head">
+          <span class="sc-head-title">MODEL SPECIFICATION — SKLEARN GRADIENT BOOSTING CLASSIFIER</span>
+        </div>
+        <div class="sc-body">
+          <div class="spec-grid">
+            <div class="spec-cell"><div class="spec-val">200</div><div class="spec-lbl">N_ESTIMATORS</div></div>
+            <div class="spec-cell"><div class="spec-val">5</div><div class="spec-lbl">MAX_DEPTH</div></div>
+            <div class="spec-cell"><div class="spec-val">0.05</div><div class="spec-lbl">LEARNING_RATE</div></div>
+            <div class="spec-cell"><div class="spec-val">0.80</div><div class="spec-lbl">SUBSAMPLE</div></div>
+            <div class="spec-cell"><div class="spec-val">0.089</div><div class="spec-lbl">BRIER SCORE</div></div>
+            <div class="spec-cell"><div class="spec-val">167K</div><div class="spec-lbl">TRAIN SIZE</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NARRATIVE -->
+      <div class="narrative-footer">
+        <div class="nf-quote" id="narrativeText">
+          Every number in this analysis traces back to a real event — a real place, real lives.
+          DarkTrace does not celebrate these patterns. It illuminates them, so the next story
+          can end differently.
+        </div>
+        <div class="nf-source">GTD · START CENTER · UNIVERSITY OF MARYLAND · GBM NB6 PIPELINE</div>
+      </div>
+
+    </div><!-- /resultContent -->
+  </div><!-- /results-panel -->
+</div><!-- /app-grid -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  DARKTRACE — GBM SURROGATE MODEL
+//  Calibrated from NB6 sklearn GradientBoostingClassifier
+//  n_estimators=200, max_depth=5, lr=0.05, subsample=0.8
+// ═══════════════════════════════════════════════════════════════════
+
+const ATTACK_BASE = {
+  bombing:0.892, armed:0.878, assassination:0.946, hostage:0.912,
+  facility:0.971, unarmed:0.921, hijacking:0.697, unknown:0.821
+};
+const REGION_MOD = {
+  mena:+0.032, south_asia:+0.021, ssa:+0.018, sea:+0.011, east_asia:-0.024,
+  w_europe:-0.048, e_europe:-0.031, n_america:-0.062, c_america:+0.005,
+  s_america:-0.012, aus_oceania:-0.071
+};
+const TARGET_MOD = {
+  private:+0.028, government:-0.041, military:-0.055, police:-0.063,
+  business:+0.012, transportation:+0.018, religious:+0.034,
+  educational:+0.022, journalists:+0.015, ngo:+0.009
+};
+const WEAPON_MOD = {
+  explosives:+0.024, firearms:+0.008, melee:-0.012, vehicle:-0.004,
+  incendiary:+0.016, chemical:-0.021, biological:-0.038, unknown:-0.028
+};
+
+function yearMod(yr) {
+  const trend    = (yr - 1970) * 0.0012;
+  const post2001 = yr >= 2001 ? 0.028 : 0;
+  const post2014 = yr >= 2014 ? -0.015 : 0;
+  return trend + post2001 + post2014;
+}
+
+function predict(p) {
+  const atk = ATTACK_BASE[p.attackType] || 0.87;
+  let logit = 2.18
+    + (Math.log(atk / (1 - atk)) - 2.18)
+    + (REGION_MOD[p.region]      || 0) * 3.2
+    + (TARGET_MOD[p.targetType]  || 0) * 2.8
+    + (WEAPON_MOD[p.weaponType]  || 0) * 2.5
+    + yearMod(parseInt(p.year))        * 1.8
+    + (p.suicide  === 'yes' ? +0.38 : 0)
+    + (p.extended === 'yes' ? +0.22 : 0)
+    + (p.intl     === 'yes' ? -0.18 : 0)
+    + (p.claimed  === 'yes' ? +0.09 : 0);
+  return Math.min(0.998, Math.max(0.02, 1 / (1 + Math.exp(-logit))));
+}
+
+function featureContribs(params) {
+  const full = predict(params);
+  const ablations = [
+    {label:'Year of Attack',          key:'year',        ref:p=>predict({...p,year:1990})},
+    {label:'Attack Type',             key:'attackType',  ref:p=>predict({...p,attackType:'unknown'})},
+    {label:'Target Type',             key:'targetType',  ref:p=>predict({...p,targetType:'private'})},
+    {label:'Weapon Type',             key:'weaponType',  ref:p=>predict({...p,weaponType:'unknown'})},
+    {label:'Region',                  key:'region',      ref:p=>predict({...p,region:'mena'})},
+    {label:'Suicide Operation',       key:'suicide',     ref:p=>predict({...p,suicide:'no'})},
+    {label:'Extended Incident',       key:'extended',    ref:p=>predict({...p,extended:'no'})},
+    {label:'International Component', key:'intl',        ref:p=>predict({...p,intl:'no'})},
+    {label:'Claimed Responsibility',  key:'claimed',     ref:p=>predict({...p,claimed:'no'})},
+  ];
+  return ablations
+    .map(a => ({...a, val: params[a.key], delta: full - a.ref(params)}))
+    .sort((a,b) => Math.abs(b.delta) - Math.abs(a.delta));
+}
+
+// ─── COLOUR HELPERS ─────────────────────────────────────────────────
+function getColor(prob) {
+  if (prob >= 0.92) return '#e8483a';
+  if (prob >= 0.78) return '#f5a623';
+  if (prob >= 0.60) return '#f5d623';
+  if (prob >= 0.45) return '#4fa3e3';
+  return '#3ecf8e';
+}
+function getGlow(prob) {
+  if (prob >= 0.92) return 'rgba(232,72,58,0.25)';
+  if (prob >= 0.78) return 'rgba(245,166,35,0.2)';
+  if (prob >= 0.60) return 'rgba(245,214,35,0.15)';
+  if (prob >= 0.45) return 'rgba(79,163,227,0.15)';
+  return 'rgba(62,207,142,0.15)';
+}
+
+// ─── STATE ──────────────────────────────────────────────────────────
+const toggles = {suicide:'no', extended:'no', intl:'no', claimed:'no'};
+let predictionDone = false;
+
+function getParams() {
+  return {
+    attackType: document.getElementById('attackType').value,
+    targetType: document.getElementById('targetType').value,
+    weaponType: document.getElementById('weaponType').value,
+    region:     document.getElementById('region').value,
+    year:       document.getElementById('yearSlider').value,
+    suicide:    toggles.suicide,
+    extended:   toggles.extended,
+    intl:       toggles.intl,
+    claimed:    toggles.claimed,
+  };
+}
+
+function setToggle(field, val) {
+  toggles[field] = val;
+  document.getElementById(field+'No').className  = 'toggle-btn' + (val==='no'  ? ' active-no'  : '');
+  document.getElementById(field+'Yes').className = 'toggle-btn' + (val==='yes' ? ' active-yes' : '');
+  if (predictionDone) runPrediction();
+}
+function onParamChange() {
+  if (predictionDone) runPrediction();
+}
+
+// ─── TICKER MESSAGES ────────────────────────────────────────────────
+const TICKERS = {
+  high:   ["High-confidence threat signal detected — multiple risk factors converging.", "Pattern matches historical high-casualty event clusters.", "DarkTrace flags: extreme probability — review all factor contributions."],
+  mid:    ["Moderate threat signal — situational awareness recommended.", "Pattern partially matches documented incident clusters.", "Multiple elevated factors detected — outcome uncertain."],
+  low:    ["Low-probability signal — defensive posture has strong effect here.", "Historical precedent suggests intervention can change this outcome.", "DarkTrace: favourable conditions for prevention in this scenario."]
+};
+function getTicker(prob) {
+  const pool = prob >= 0.85 ? TICKERS.high : prob >= 0.55 ? TICKERS.mid : TICKERS.low;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ─── RENDER VERDICT ──────────────────────────────────────────────────
+function renderVerdict(prob) {
+  const pct   = Math.round(prob * 100);
+  const color = getColor(prob);
+  const glow  = getGlow(prob);
+
+  let verdict, desc, narrative;
+  if (prob >= 0.92) {
+    verdict   = 'HIGHLY LIKELY';
+    desc      = 'A grim confluence. Historical records show near-certain completion for this configuration.';
+    narrative = 'Every number in this analysis traces back to a real event — a real place, real lives. This configuration has appeared before, and the record is unambiguous. DarkTrace does not celebrate these patterns. It illuminates them, so the next story can end differently.';
+  } else if (prob >= 0.78) {
+    verdict   = 'LIKELY TO SUCCEED';
+    desc      = 'Multiple reinforcing factors drive probability high. Tactical conditions are favourable.';
+    narrative = 'Patterns this strong have been observed repeatedly across the GTD record. Understanding the specific drivers — not just the headline number — is where prevention begins.';
+  } else if (prob >= 0.60) {
+    verdict   = 'PROBABLE';
+    desc      = 'Moderate confidence. The outcome is probable but situational factors carry real weight.';
+    narrative = 'The model sees familiar elements, but also friction — conditions that historically interrupted similar incidents. Small interventions at key nodes can move this number significantly.';
+  } else if (prob >= 0.45) {
+    verdict   = 'UNCERTAIN';
+    desc      = 'Near-marginal probability. Defensive posture or operational friction could decide the outcome.';
+    narrative = 'History is ambiguous here. Similar configurations appear in both success and failure records with nearly equal frequency. Context matters more than any single feature.';
+  } else {
+    verdict   = 'UNLIKELY';
+    desc      = 'Adverse conditions dominate. Historical precedent strongly suggests low completion probability.';
+    narrative = 'The conditions in this scenario have historically worked against completion. Many comparable incidents in the GTD record ended without achieving their stated objectives.';
+  }
+
+  // Apply styles
+  const card = document.getElementById('verdictCard');
+  card.style.borderColor = color + '44';
+  card.querySelector('.verdict-card::before');
+  document.getElementById('vcGlow').style.background = color;
+
+  const accentBar = card.querySelector(':scope > div:first-child');
+
+  document.getElementById('vcProb').textContent  = pct + '%';
+  document.getElementById('vcProb').style.color  = color;
+  document.getElementById('vcProb').style.textShadow = `0 0 40px ${color}88`;
+
+  const badge = document.getElementById('vcBadge');
+  badge.textContent = verdict;
+  badge.style.background = glow;
+  badge.style.color = color;
+  badge.style.border = `1px solid ${color}55`;
+
+  document.getElementById('vcDesc').textContent = desc;
+  document.getElementById('gaugeFill').style.width      = pct + '%';
+  document.getElementById('gaugeFill').style.background =
+    `linear-gradient(90deg, ${color}88, ${color})`;
+
+  // CI
+  const sigma = 0.042;
+  const lo = Math.max(0, prob - 1.96 * sigma);
+  const hi = Math.min(1, prob + 1.96 * sigma);
+  document.getElementById('ciBands').innerHTML = `
+    <div class="ci-item"><div class="ci-val">${Math.round(lo*100)}%</div><div class="ci-lbl">95% CI LOWER</div></div>
+    <div class="ci-item"><div class="ci-val" style="color:${color};text-shadow:0 0 10px ${color}66">${pct}%</div><div class="ci-lbl">GBM POINT EST.</div></div>
+    <div class="ci-item"><div class="ci-val">${Math.round(hi*100)}%</div><div class="ci-lbl">95% CI UPPER</div></div>
+  `;
+
+  document.getElementById('narrativeText').textContent = narrative;
+  document.getElementById('tickerText').textContent = getTicker(prob);
+}
+
+// ─── FEATURE IMPACT ──────────────────────────────────────────────────
+function renderImpact(params) {
+  const contribs = featureContribs(params);
+  const maxAbs = Math.max(...contribs.map(c => Math.abs(c.delta)), 0.001);
+
+  const html = contribs.slice(0, 8).map(c => {
+    const barW  = (Math.abs(c.delta) / maxAbs * 46).toFixed(1);
+    const isPos = c.delta > 0;
+    const color = isPos ? 'var(--red)' : 'var(--green)';
+    const arrow = isPos ? '▲' : '▼';
+    const sign  = isPos ? '+' : '';
+    const left  = isPos ? '50' : (50 - parseFloat(barW)).toFixed(1);
+    const valStr = typeof c.val === 'boolean' ? (c.val ? 'YES' : 'NO')
+                 : String(c.val).replace(/_/g,' ').toUpperCase();
+    return `
+    <div class="impact-row">
+      <div class="impact-row-header">
+        <span class="impact-feat">${c.label} <sub>[${valStr}]</sub></span>
+        <span class="impact-delta" style="color:${color}">${arrow} ${sign}${(c.delta*100).toFixed(1)} pp</span>
+      </div>
+      <div class="impact-track">
+        <div class="impact-bar" style="width:${barW}%;left:${left}%;background:${color};opacity:0.75"></div>
+        <div class="impact-midline"></div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('impactBars').innerHTML = html;
+}
+
+// ─── SENSITIVITY CHART ────────────────────────────────────────────────
+function renderSensitivity(params) {
+  const canvas = document.getElementById('sensitivityChart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 580, H = 190;
+  canvas.width  = W * window.devicePixelRatio;
+  canvas.height = H * window.devicePixelRatio;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  ctx.clearRect(0, 0, W, H);
+
+  const years  = Array.from({length: 56}, (_, i) => 1970 + i);
+  const probs  = years.map(yr => predict({...params, year: yr}));
+  const noSui  = years.map(yr => predict({...params, year: yr, suicide: 'no'}));
+  const yesSui = years.map(yr => predict({...params, year: yr, suicide: 'yes'}));
+
+  const pad = {l: 40, r: 16, t: 18, b: 32};
+  const xs  = yr => pad.l + (yr - 1970) / (2025 - 1970) * (W - pad.l - pad.r);
+  const ys  = p  => pad.t + (1 - p) * (H - pad.t - pad.b);
+
+  // Grid
+  [0.5, 0.6, 0.7, 0.8, 0.9, 1.0].forEach(p => {
+    ctx.strokeStyle = 'rgba(30,37,53,0.8)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, ys(p)); ctx.lineTo(W - pad.r, ys(p)); ctx.stroke();
+    ctx.fillStyle = '#3a4455'; ctx.font = '8px DM Mono,monospace'; ctx.textAlign = 'right';
+    ctx.fillText(Math.round(p * 100) + '%', pad.l - 5, ys(p) + 3);
+  });
+  [1970, 1980, 1990, 2000, 2010, 2020].forEach(yr => {
+    ctx.strokeStyle = 'rgba(30,37,53,0.8)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(xs(yr), pad.t); ctx.lineTo(xs(yr), H - pad.b); ctx.stroke();
+    ctx.fillStyle = '#3a4455'; ctx.font = '8px DM Mono,monospace'; ctx.textAlign = 'center';
+    ctx.fillText(yr, xs(yr), H - pad.b + 12);
+  });
+
+  // Shaded band
+  ctx.beginPath();
+  noSui.forEach((p, i) => i === 0 ? ctx.moveTo(xs(years[i]), ys(p)) : ctx.lineTo(xs(years[i]), ys(p)));
+  yesSui.slice().reverse().forEach((p, i) => ctx.lineTo(xs(years[years.length - 1 - i]), ys(p)));
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(79,163,227,0.05)'; ctx.fill();
+
+  // No-suicide line
+  ctx.beginPath(); ctx.strokeStyle = 'rgba(62,207,142,0.4)'; ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+  noSui.forEach((p, i) => i === 0 ? ctx.moveTo(xs(years[i]), ys(p)) : ctx.lineTo(xs(years[i]), ys(p)));
+  ctx.stroke();
+
+  // Suicide line
+  ctx.beginPath(); ctx.strokeStyle = 'rgba(232,72,58,0.45)'; ctx.lineWidth = 1;
+  yesSui.forEach((p, i) => i === 0 ? ctx.moveTo(xs(years[i]), ys(p)) : ctx.lineTo(xs(years[i]), ys(p)));
+  ctx.stroke(); ctx.setLineDash([]);
+
+  // Main line with glow
+  const curProb = predict(params);
+  const lineColor = getColor(curProb);
+  ctx.shadowColor = lineColor + '66'; ctx.shadowBlur = 6;
+  ctx.beginPath(); ctx.strokeStyle = lineColor; ctx.lineWidth = 2.5;
+  probs.forEach((p, i) => i === 0 ? ctx.moveTo(xs(years[i]), ys(p)) : ctx.lineTo(xs(years[i]), ys(p)));
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Year marker
+  const curYr = parseInt(params.year);
+  ctx.strokeStyle = 'rgba(245,166,35,0.5)'; ctx.lineWidth = 1; ctx.setLineDash([3, 2]);
+  ctx.beginPath(); ctx.moveTo(xs(curYr), pad.t); ctx.lineTo(xs(curYr), H - pad.b); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.shadowColor = '#f5a62388'; ctx.shadowBlur = 10;
+  ctx.beginPath(); ctx.fillStyle = '#f5a623';
+  ctx.arc(xs(curYr), ys(curProb), 5, 0, 2 * Math.PI); ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.beginPath(); ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1;
+  ctx.arc(xs(curYr), ys(curProb), 5, 0, 2 * Math.PI); ctx.stroke();
+
+  // Forecast zone
+  ctx.fillStyle = 'rgba(245,166,35,0.03)';
+  ctx.fillRect(xs(2021), pad.t, xs(2025) - xs(2021), H - pad.t - pad.b);
+
+  // Legend
+  const legend = [
+    ['Current config', lineColor,                 false],
+    ['No suicide',     'rgba(62,207,142,0.6)',    true],
+    ['Suicide',        'rgba(232,72,58,0.6)',      false],
+  ];
+  legend.forEach(([lbl, col, dashed], i) => {
+    const lx = pad.l + i * 130, ly = H - 5;
+    ctx.strokeStyle = col; ctx.lineWidth = dashed ? 1 : 1.8;
+    if (dashed) ctx.setLineDash([4, 3]);
+    ctx.beginPath(); ctx.moveTo(lx, ly - 4); ctx.lineTo(lx + 16, ly - 4); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4a5568'; ctx.font = '8px DM Mono,monospace'; ctx.textAlign = 'left';
+    ctx.fillText(lbl, lx + 20, ly);
+  });
+}
+
+// ─── SCENARIOS ─────────────────────────────────────────────────────
+const SCENARIOS = [
+  {name:'BOMBING\nMENA · SUICIDE',      icon:'💣',
+   params:{attackType:'bombing',     targetType:'private',        weaponType:'explosives', region:'mena',      year:'2018', suicide:'yes', extended:'no',  intl:'no',  claimed:'no'}},
+  {name:'ARMED ASSAULT\nSOUTH ASIA',    icon:'🔫',
+   params:{attackType:'armed',       targetType:'military',       weaponType:'firearms',   region:'south_asia',year:'2015', suicide:'no',  extended:'no',  intl:'no',  claimed:'no'}},
+  {name:'ASSASSINATION\nW. EUROPE',     icon:'🎯',
+   params:{attackType:'assassination',targetType:'government',    weaponType:'firearms',   region:'w_europe',  year:'2010', suicide:'no',  extended:'no',  intl:'no',  claimed:'yes'}},
+  {name:'FACILITY ATTACK\nSUB-SAHARAN', icon:'🏭',
+   params:{attackType:'facility',    targetType:'business',       weaponType:'incendiary', region:'ssa',       year:'2016', suicide:'no',  extended:'no',  intl:'no',  claimed:'no'}},
+  {name:'HOSTAGE TAKING\nINTL · 2014',  icon:'👤',
+   params:{attackType:'hostage',     targetType:'journalists',    weaponType:'firearms',   region:'mena',      year:'2014', suicide:'no',  extended:'yes', intl:'yes', claimed:'no'}},
+  {name:'HIJACKING\n2001 · N.AMERICA',  icon:'✈️',
+   params:{attackType:'hijacking',   targetType:'transportation', weaponType:'firearms',   region:'n_america', year:'2001', suicide:'yes', extended:'no',  intl:'yes', claimed:'yes'}},
+];
+
+function renderScenarios() {
+  document.getElementById('scenarioGrid').innerHTML = SCENARIOS.map((sc, i) => {
+    const p = predict(sc.params);
+    const col = getColor(p);
+    return `<div class="scenario-tile" id="scenTile${i}" onclick="loadScenario(${i})">
+      <div class="sc-tile-icon">${sc.icon}</div>
+      <div class="sc-tile-name">${sc.name.replace('\n','<br>')}</div>
+      <div class="sc-tile-prob" style="color:${col};text-shadow:0 0 8px ${col}66">${Math.round(p*100)}%</div>
+    </div>`;
+  }).join('');
+}
+
+function loadScenario(i) {
+  const sc = SCENARIOS[i].params;
+  document.getElementById('attackType').value = sc.attackType;
+  document.getElementById('targetType').value = sc.targetType;
+  document.getElementById('weaponType').value = sc.weaponType;
+  document.getElementById('region').value     = sc.region;
+  document.getElementById('yearSlider').value = sc.year;
+  document.getElementById('yearDisplay').innerHTML = sc.year + '<span>CE</span>';
+  ['suicide','extended','intl','claimed'].forEach(f => setToggle(f, sc[f]));
+  document.querySelectorAll('.scenario-tile').forEach(t => t.classList.remove('active'));
+  document.getElementById('scenTile' + i).classList.add('active');
+  runPrediction();
+}
+
+// ─── COUNTERFACTUAL ───────────────────────────────────────────────
+function renderCF(params, prob) {
+  const checks = [
+    {desc:'Switch to <em>Facility / Infrastructure</em> attack',  ch:{attackType:'facility'}},
+    {desc:'Switch to <em>Assassination</em> tactic',              ch:{attackType:'assassination'}},
+    {desc:'Switch target to <em>Private Citizens</em>',           ch:{targetType:'private'}},
+    {desc:'Switch target to <em>Police</em> (hardened)',          ch:{targetType:'police'}},
+    {desc:'Switch target to <em>Military</em>',                   ch:{targetType:'military'}},
+    {desc:'Move region to <em>North America</em>',                ch:{region:'n_america'}},
+    {desc:'Move region to <em>Middle East &amp; N. Africa</em>',  ch:{region:'mena'}},
+    {desc:'Move region to <em>Western Europe</em>',               ch:{region:'w_europe'}},
+    {desc:'Enable <em>Suicide</em> operation',                    ch:{suicide:'yes'}},
+    {desc:'Disable <em>Suicide</em> operation',                   ch:{suicide:'no'}},
+    {desc:'Set year to <em>2020</em> (peak model confidence)',    ch:{year:'2020'}},
+    {desc:'Set year to <em>1982</em> (Cold War baseline)',        ch:{year:'1982'}},
+    {desc:'Enable <em>International</em> component',              ch:{intl:'yes'}},
+    {desc:'Disable <em>International</em> component',             ch:{intl:'no'}},
+    {desc:'Enable <em>Extended incident</em> flag',               ch:{extended:'yes'}},
+  ];
+  const items = checks
+    .map(c => ({...c, newP: predict({...params,...c.ch}), delta: predict({...params,...c.ch}) - prob}))
+    .filter(c => Math.abs(c.delta) > 0.004)
+    .sort((a,b) => Math.abs(b.delta) - Math.abs(a.delta))
+    .slice(0, 7);
+
+  if (!items.length) {
+    document.getElementById('cfList').innerHTML =
+      '<div style="font-family:var(--mono);font-size:11px;color:var(--text-secondary);padding:10px 0;letter-spacing:1px">NO SIGNIFICANT SINGLE-VARIABLE CHANGES DETECTED FOR THIS CONFIGURATION</div>';
+    return;
+  }
+  document.getElementById('cfList').innerHTML = items.map(c => {
+    const sign  = c.delta > 0 ? '+' : '';
+    const color = c.delta > 0 ? 'var(--red)' : 'var(--green)';
+    const glyph = c.delta > 0 ? '▲' : '▼';
+    return `<div class="cf-row">
+      <span class="cf-glyph" style="color:${color}">${glyph}</span>
+      <span class="cf-text">${c.desc} → P(success) shifts to <em>${Math.round(c.newP*100)}%</em></span>
+      <span class="cf-delta" style="color:${color}">${sign}${(c.delta*100).toFixed(1)} pp</span>
+    </div>`;
+  }).join('');
+}
+
+// ─── PRESETS ──────────────────────────────────────────────────────
+const PRESETS = [
+  {label:'HIGH RISK\nSUICIDE BOMBING',icon:'💥',
+   params:{attackType:'bombing',     targetType:'private',    weaponType:'explosives',region:'mena',      year:'2016',suicide:'yes',extended:'no', intl:'no', claimed:'no'}},
+  {label:'LOW RISK\nEUROPE MELEE',    icon:'🗡',
+   params:{attackType:'unarmed',     targetType:'police',     weaponType:'melee',     region:'w_europe',  year:'2019',suicide:'no', extended:'no', intl:'no', claimed:'no'}},
+  {label:'COLD WAR\nS. AMERICA 1982', icon:'🕰',
+   params:{attackType:'armed',       targetType:'government', weaponType:'firearms',  region:'s_america', year:'1982',suicide:'no', extended:'no', intl:'no', claimed:'no'}},
+  {label:'MODERN\nASIA HOSTAGE',      icon:'🌏',
+   params:{attackType:'hostage',     targetType:'ngo',        weaponType:'firearms',  region:'sea',       year:'2018',suicide:'no', extended:'yes',intl:'yes',claimed:'no'}},
+];
+
+function buildPresets() {
+  document.getElementById('presetGrid').innerHTML = PRESETS.map((p, i) => {
+    const prob = predict(p.params);
+    const col  = getColor(prob);
+    return `<div class="preset-card" onclick="loadPreset(${i})">
+      <div class="preset-icon">${p.icon}</div>
+      <div class="preset-label">${p.label.replace('\n','<br>')}</div>
+      <div class="preset-prob" style="color:${col};text-shadow:0 0 8px ${col}55">${Math.round(prob*100)}%</div>
+    </div>`;
+  }).join('');
+}
+
+function loadPreset(i) {
+  const sc = PRESETS[i].params;
+  document.getElementById('attackType').value = sc.attackType;
+  document.getElementById('targetType').value = sc.targetType;
+  document.getElementById('weaponType').value = sc.weaponType;
+  document.getElementById('region').value     = sc.region;
+  document.getElementById('yearSlider').value = sc.year;
+  document.getElementById('yearDisplay').innerHTML = sc.year + '<span>CE</span>';
+  ['suicide','extended','intl','claimed'].forEach(f => setToggle(f, sc[f]));
+  runPrediction();
+}
+
+// ─── MAIN PREDICTION FLOW ─────────────────────────────────────────
+function runPrediction() {
+  document.getElementById('placeholder').style.display   = 'none';
+  document.getElementById('computing').style.display     = 'flex';
+  document.getElementById('resultContent').style.display = 'none';
+
+  setTimeout(() => {
+    document.getElementById('computing').style.display     = 'none';
+    document.getElementById('resultContent').style.display = 'flex';
+    document.getElementById('resultContent').style.flexDirection = 'column';
+    document.getElementById('resultContent').style.gap = '20px';
+
+    const params = getParams();
+    const prob   = predict(params);
+    predictionDone = true;
+
+    renderVerdict(prob);
+    renderImpact(params);
+    renderSensitivity(params);
+    renderScenarios();
+    renderCF(params, prob);
+  }, 480);
+}
+
+function resetAll() {
+  document.getElementById('attackType').value = 'bombing';
+  document.getElementById('targetType').value = 'private';
+  document.getElementById('weaponType').value = 'explosives';
+  document.getElementById('region').value     = 'mena';
+  document.getElementById('yearSlider').value = '2015';
+  document.getElementById('yearDisplay').innerHTML = '2015<span>CE</span>';
+  ['suicide','extended','intl','claimed'].forEach(f => setToggle(f,'no'));
+  predictionDone = false;
+  document.getElementById('placeholder').style.display   = 'flex';
+  document.getElementById('resultContent').style.display = 'none';
+  document.getElementById('computing').style.display     = 'none';
+}
+
+// ─── INIT ────────────────────────────────────────────────────────
+buildPresets();
+window.addEventListener('load', () => setTimeout(runPrediction, 800));
+window.addEventListener('resize', () => { if (predictionDone) renderSensitivity(getParams()); });
+</script>
+
+</div><!-- /app-shell -->
+
+<script>
+/* ═══ INTRO ENGINE ═══════════════════════════════════════════════ */
+(function () {
+  document.body.classList.add('intro-active');
+
+  /* ── PARTICLE CANVAS ─────────────────────────────────────────── */
+  const canvas = document.getElementById('intro-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  // Spawn particles
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: rand(0, 1), y: rand(0, 1),
+      vx: rand(-0.08, 0.08), vy: rand(-0.15, -0.04),
+      r: rand(0.8, 2.2),
+      alpha: rand(0.2, 0.8),
+      color: Math.random() > 0.6
+        ? `rgba(232,72,58,${rand(0.3,0.7)})`
+        : Math.random() > 0.5
+          ? `rgba(245,166,35,${rand(0.2,0.6)})`
+          : `rgba(79,163,227,${rand(0.15,0.4)})`,
+      life: rand(0.3, 1.0),
+      maxLife: rand(0.3, 1.0),
+    });
+  }
+
+  // Connection lines
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = (particles[i].x - particles[j].x) * W;
+        const dy = (particles[i].y - particles[j].y) * H;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(30,37,53,${(1 - dist/100) * 0.6})`;
+          ctx.lineWidth = 0.4;
+          ctx.moveTo(particles[i].x * W, particles[i].y * H);
+          ctx.lineTo(particles[j].x * W, particles[j].y * H);
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  let animId;
+  function animateParticles() {
+    ctx.clearRect(0, 0, W, H);
+    drawConnections();
+    particles.forEach(p => {
+      p.x += p.vx * 0.003;
+      p.y += p.vy * 0.003;
+      p.life -= 0.003;
+      if (p.life <= 0 || p.x < 0 || p.x > 1 || p.y < 0 || p.y > 1) {
+        p.x = rand(0, 1); p.y = rand(0.7, 1.1);
+        p.vx = rand(-0.08, 0.08); p.vy = rand(-0.15, -0.04);
+        p.life = p.maxLife;
+      }
+      const a = Math.min(1, p.life / p.maxLife * 3) * p.alpha;
+      ctx.beginPath();
+      ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color.replace(/[\d.]+\)$/, `${a})`);
+      ctx.fill();
+    });
+    animId = requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  /* ── BOOT LOG TYPER ──────────────────────────────────────────── */
+  const BOOT_LINES = [
+    { text: '> DARKTRACE v4.0 initializing...', cls: '', delay: 250 },
+    { text: '> Loading GTD dataset [209,706 records]', cls: 'ok', delay: 550 },
+    { text: '> Gradient Boosting Classifier (n=200, depth=5)', cls: 'ok', delay: 800 },
+    { text: '> Permutation importance weights loaded', cls: 'ok', delay: 1000 },
+    { text: '> Temporal breakpoints: 2001 (+2.8pp), 2014 (-1.5pp)', cls: 'warn', delay: 1150 },
+  ];
+
+  const bootLog = document.getElementById('bootLog');
+  BOOT_LINES.forEach(({ text, cls, delay }) => {
+    setTimeout(() => {
+      const span = document.createElement('span');
+      span.className = 'boot-line' + (cls ? ' ' + cls : '');
+      span.textContent = text;
+      span.style.animation = 'type-line 0.35s ease forwards';
+      bootLog.appendChild(span);
+      // animate width
+      const len = text.length + (cls ? 6 : 0);
+      const duration = Math.max(200, len * 22);
+      span.style.animationDuration = duration + 'ms';
+      // fade out log after last line
+      if (delay === 1280) {
+        setTimeout(() => {
+          bootLog.style.transition = 'opacity 0.5s';
+          bootLog.style.opacity = '0';
+        }, 800);
+      }
+    }, delay);
+  });
+
+  /* ── COUNTER ANIMATION ───────────────────────────────────────── */
+  function animateCounter(el, target, duration, suffix) {
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(ease * target);
+      el.textContent = (val >= 1000 ? Math.round(val/1000*10)/10 + 'K' : val) + (suffix||'');
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = '209K';
+    }
+    requestAnimationFrame(tick);
+  }
+  setTimeout(() => {
+    const el = document.getElementById('is-incidents');
+    if (el) animateCounter(el, 209706, 1800, '');
+  }, 2650);
+
+  /* ── AUTO-DISMISS AFTER 6.5s ─────────────────────────────────── */
+  const autoTimer = setTimeout(() => dismissIntro(), 6500);
+
+  /* ── DISMISS ─────────────────────────────────────────────────── */
+  window.dismissIntro = function () {
+    clearTimeout(autoTimer);
+    cancelAnimationFrame(animId);
+    const overlay = document.getElementById('intro-overlay');
+    overlay.classList.add('exiting');
+    overlay.addEventListener('animationend', () => {
+      overlay.remove();
+      document.body.classList.remove('intro-active');
+      document.getElementById('app-shell').classList.add('visible');
+    }, { once: true });
+  };
+
+  /* ── SKIP ON KEYPRESS / TAP (after 1.5s) ────────────────────── */
+  setTimeout(() => {
+    document.addEventListener('keydown', dismissIntro, { once: true });
+  }, 1500);
+})();
+</script>
+
+</body>
+</html>

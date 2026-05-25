@@ -1,0 +1,3 @@
+Model,CV_R2,Stage
+OLS,0.4101608364042818,regression
+Lasso,0.41028613100269,regression
